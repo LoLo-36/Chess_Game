@@ -1,6 +1,7 @@
 package org.example.game;
 
 import org.example.logic.Move;
+import org.example.pieces.Pawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,10 @@ public class Game {
     public void movePiece(Piece piece, int x, int y) {
         if (!board.validate(x, y) || !piece.canMove(board, x, y)) {
             return;
+        }
+
+        if (piece instanceof Pawn) {
+            ((Pawn) piece).setStatus(false);
         }
 
         Piece killed = board.getPieceAt(x, y);

@@ -19,6 +19,10 @@ public class Pawn extends Piece {
         firstMove = true;
     }
 
+    public void setStatus(boolean firstMove) {
+        this.firstMove = firstMove;
+    }
+
     @Override
     public String getSymbol() {
         return "P";
@@ -35,24 +39,18 @@ public class Pawn extends Piece {
         int currY = getCoordinatesY();
         int direction = (getColor() == Color.WHITE) ? 1 : -1;
 
-        if (x == currX && y == currY + direction && board.getPieceAt(x, y) == null) {
-            firstMove = false;
-            return true;
+        if (x == currX && y == currY + direction) {
+            return board.getPieceAt(x, y) == null;
         }
 
-        if ((firstMove && x == currX && y == currY + 2 * direction)
-                && board.getPieceAt(currX, currY + direction) == null
-                && board.getPieceAt(x, y) == null) {
-                firstMove = false;
-                return true;
+        if (firstMove && x == currX && y == currY + 2 * direction) {
+            return board.getPieceAt(currX, currY + direction) == null
+                    && board.getPieceAt(x, y) == null;
         }
 
         if (Math.abs(x - currX) == 1 && y == currY + direction) {
             Piece target = board.getPieceAt(x, y);
-            if (target != null && target.getColor() != this.getColor()) {
-                firstMove = false;
-                return true;
-            }
+            return target != null && target.getColor() != this.getColor();
         }
 
         return false;

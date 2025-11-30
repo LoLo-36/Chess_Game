@@ -29,15 +29,12 @@ public class Rook extends Piece {
         }
 
         List<Piece> pieces = board.getPieces();
-        if (pieces.isEmpty()) {
-            return false;
-        }
 
         int currX = this.getCoordinatesX();
         int currY = this.getCoordinatesY();
 
         for (Piece piece : pieces) {
-            if (piece == this) {
+            if (piece == null || piece == this) {
                 continue;
             }
 

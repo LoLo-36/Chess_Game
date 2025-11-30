@@ -79,7 +79,7 @@ public class Move {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
+        sb.append("(");
         switch (endX) {
             case 1:
                 sb.append("a");
@@ -137,10 +137,17 @@ public class Move {
             default:
                 break;
         }
+        sb.append(")");
+        if (killedPiece != null) {
+            sb.append(" eat: ")
+                    .append(killedPiece.getColor())
+                    .append("-")
+                    .append(killedPiece.getSymbol());
+        }
 
         return movedPiece.getColor()
                 + "-" + movedPiece.getSymbol()
-                + "(" + sb + ")"
+                + sb
         ;
     }
 }

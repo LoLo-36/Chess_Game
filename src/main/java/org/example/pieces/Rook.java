@@ -23,8 +23,10 @@ public class Rook extends Piece {
 
     @Override
     public boolean canMove(Board board, int x, int y) {
-        if (this.getCoordinatesX() != x
-                && this.getCoordinatesY() != y) {
+        if ((this.getCoordinatesX() != x
+                && this.getCoordinatesY() != y)
+                ||(this.getCoordinatesX() == x
+                && this.getCoordinatesY() == y)) {
             return false;
         }
 

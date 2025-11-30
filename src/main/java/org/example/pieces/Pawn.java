@@ -35,23 +35,24 @@ public class Pawn extends Piece {
         int currY = getCoordinatesY();
         int direction = (getColor() == Color.WHITE) ? 1 : -1;
 
-        if (x == currX && y == currY + direction) {
-            return board.getPieceAt(x, y) == null;
+        if (x == currX && y == currY + direction && board.getPieceAt(x, y) == null) {
+            firstMove = false;
+            return true;
         }
 
-        if (firstMove && x == currX && y == currY + 2 * direction) {
-            firstMove = false;
-            return board.getPieceAt(currX, currY + direction) == null
-                    && board.getPieceAt(x, y) == null;
+        if ((firstMove && x == currX && y == currY + 2 * direction)
+                && board.getPieceAt(currX, currY + direction) == null
+                && board.getPieceAt(x, y) == null) {
+                firstMove = false;
+                return true;
         }
 
         if (Math.abs(x - currX) == 1 && y == currY + direction) {
             Piece target = board.getPieceAt(x, y);
-            return target != null && target.getColor() != this.getColor();
-        }
-
-        if (firstMove) {
-            firstMove = false;
+            if (target != null && target.getColor() != this.getColor()) {
+                firstMove = false;
+                return true;
+            }
         }
 
         return false;

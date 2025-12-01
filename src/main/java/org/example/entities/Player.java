@@ -1,21 +1,38 @@
 package org.example.entities;
 
 import org.example.game.*;
+import org.example.pieces.King;
 import org.example.pieces.Pawn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private final Board board;
+    private String name;
     private boolean inTurn;
+    private boolean isWinner;
     private List<Move> moveHistory;
 
-    public Player(Board board) {
-        this.board = board;
+    public Player() {
+        this.name = "";
+        this.inTurn = false;
+        this.isWinner = false;
+        this.moveHistory = new ArrayList<>();
     }
 
-    public Board getBoard() {
-        return board;
+    public Player(String name) {
+        this.name = name;
+        this.inTurn = false;
+        this.isWinner = false;
+        this.moveHistory = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Move> getMoves() {
@@ -26,6 +43,14 @@ public class Player {
         this.moveHistory = moves;
     }
 
+    public boolean isWinner() {
+        return isWinner;
+    }
+
+    public void setWinner(boolean winner) {
+        isWinner = winner;
+    }
+
     public boolean isInTurn() {
         return inTurn;
     }
@@ -33,7 +58,7 @@ public class Player {
         this.inTurn = inTurn;
     }
 
-    public void movePiece(Piece piece, int x, int y) {
+    public void movePiece(Board board, Piece piece, int x, int y) {
         if (!board.validate(x, y) || !piece.canMove(board, x, y)) {
             return;
         }
@@ -58,6 +83,9 @@ public class Player {
             );
 
             board.removePieceAt(x, y);
+            if (killed instanceof King) {
+                isWinner = true;
+            }
         }
 
         piece.setCoordinatesX(x);

@@ -1,6 +1,6 @@
-package org.example.logic;
+package org.example.game;
 
-import org.example.game.Piece;
+import org.example.entities.Piece;
 
 public class Move {
     private int startX;

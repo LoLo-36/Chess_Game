@@ -1,16 +1,16 @@
-package org.example.game;
+package org.example.entities;
 
-import org.example.logic.Move;
+import org.example.game.*;
 import org.example.pieces.Pawn;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class Player {
     private final Board board;
-    private ArrayList<Move> moveHistory;
+    private boolean inTurn;
+    private List<Move> moveHistory;
 
-    public Game(Board board) {
+    public Player(Board board) {
         this.board = board;
     }
 
@@ -20,6 +20,17 @@ public class Game {
 
     public List<Move> getMoves() {
         return moveHistory;
+    }
+
+    public void setMoves(List<Move> moves) {
+        this.moveHistory = moves;
+    }
+
+    public boolean isInTurn() {
+        return inTurn;
+    }
+    public void setInTurn(boolean inTurn) {
+        this.inTurn = inTurn;
     }
 
     public void movePiece(Piece piece, int x, int y) {

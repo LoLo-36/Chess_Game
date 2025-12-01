@@ -1,7 +1,7 @@
 package org.example.pieces;
 
-import org.example.game.Board;
-import org.example.game.Piece;
+import org.example.entities.Board;
+import org.example.entities.Piece;
 
 import java.awt.*;
 import java.util.List;

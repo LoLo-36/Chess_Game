@@ -4,17 +4,20 @@ import org.example.game.*;
 import org.example.pieces.King;
 import org.example.pieces.Pawn;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
     private String name;
+    private Color color;
     private boolean inTurn;
     private boolean isWinner;
     private List<Move> moveHistory;
 
     public Player() {
         this.name = "";
+        this.color = Color.WHITE;
         this.inTurn = false;
         this.isWinner = false;
         this.moveHistory = new ArrayList<>();
@@ -22,9 +25,26 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
+        this.color = Color.WHITE;
         this.inTurn = false;
         this.isWinner = false;
         this.moveHistory = new ArrayList<>();
+    }
+
+    public Player(String name, Color color) {
+        this.name = name;
+        this.color = color;
+        this.inTurn = false;
+        this.isWinner = false;
+        this.moveHistory = new ArrayList<>();
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public String getName() {
@@ -58,13 +78,15 @@ public class Player {
         this.inTurn = inTurn;
     }
 
-    public void movePiece(Board board, Piece piece, int x, int y) {
-        if (!board.validate(x, y) || !piece.canMove(board, x, y)) {
-            return;
+    public Move movePiece(Board board, Piece piece, int x, int y) {
+        if (!board.validate(x, y)
+                || piece.getColor() != this.color
+                || !piece.canMove(board, x, y)) {
+            return null;
         }
 
         if (piece instanceof Pawn) {
-            ((Pawn) piece).setStatus(false);
+            ((Pawn) piece).setFirstMove(false);
         }
 
         Piece killed = board.getPieceAt(x, y);
@@ -91,5 +113,6 @@ public class Player {
         piece.setCoordinatesX(x);
         piece.setCoordinatesY(y);
         moveHistory.add(move);
+        return move;
     }
 }

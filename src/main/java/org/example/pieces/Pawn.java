@@ -19,7 +19,7 @@ public class Pawn extends Piece {
         firstMove = true;
     }
 
-    public void setStatus(boolean firstMove) {
+    public void setFirstMove(boolean firstMove) {
         this.firstMove = firstMove;
     }
 

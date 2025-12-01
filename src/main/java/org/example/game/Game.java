@@ -12,17 +12,19 @@ public class Game {
     private final Player player1;
     private final Player player2;
     private List<Move> moveHistory;
+    private boolean isGameOver;
+    private String gameStatusMessage;
 
     public Game() {
         this.board = Board.getInstance();
-        this.player1 = new Player();
-        this.player2 = new Player();
+        this.player1 = new Player("Player 1");
+        this.player2 = new Player("Player 2");
     }
 
     public Game(Board board) {
         this.board = board;
-        this.player1 = new Player();
-        this.player2 = new Player();
+        this.player1 = new Player("Player 1");
+        this.player2 = new Player("Player 2");
     }
 
     public Game(Board board, Player player1, Player player2) {
@@ -57,11 +59,49 @@ public class Game {
         }
     }
 
-    public void gameLoop() {
-        player1.setInTurn(true);
-        player2.setInTurn(false);
-        while (true) {
-
+    public boolean playTurn(int startX, int startY, int endX, int endY) {
+        if (isGameOver) {
+            this.gameStatusMessage = "Game is already over.";
+            return false;
         }
+
+        Player currentPlayer = player1.isInTurn() ? player1 : player2;
+        Player otherPlayer = player1.isInTurn() ? player2 : player1;
+
+        Piece pieceToMove = board.getPieceAt(startX, startY);
+
+        if (pieceToMove == null) {
+            return false;
+        }
+
+        if (pieceToMove.getColor() != currentPlayer.getColor()) {
+            return false;
+        }
+
+        Move move = currentPlayer.movePiece(board, pieceToMove, endX, endY);
+        if (move == null) {
+            return false;
+        } else {
+            moveHistory.add(move);
+        }
+
+        if (currentPlayer.isWinner()) {
+            isGameOver = true;
+            this.gameStatusMessage = "Winner: " + currentPlayer.getName();
+            return true;
+        }
+
+        currentPlayer.setInTurn(false);
+        otherPlayer.setInTurn(true);
+
+        return true;
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public String getGameStatusMessage() {
+        return gameStatusMessage;
     }
 }

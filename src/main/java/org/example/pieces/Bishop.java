@@ -22,6 +22,35 @@ public class Bishop extends Piece {
 
     @Override
     public boolean canMove(Board board, int x, int y) {
+        if (Math.abs(this.getCoordinatesX() - x) != Math.abs(this.getCoordinatesY() - y)
+                || this.getCoordinatesX() == x || this.getCoordinatesY() == y) {
+            return false;
+        }
 
+        List<Piece> pieces = board.getPieces();
+        int currX = this.getCoordinatesX();
+        int currY = this.getCoordinatesY();
+
+        for (Piece piece : pieces) {
+            if (piece == null || piece == this
+                    || Math.abs(currX - piece.getCoordinatesX()) != Math.abs(currY - piece.getCoordinatesY())
+                    || currX == piece.getCoordinatesX() || currY == piece.getCoordinatesY()) {
+                continue;
+            }
+
+            int px = piece.getCoordinatesX();
+
+            if (x - currX > 0 && px - currX > 0
+                    && px - currX < x - currX) {
+                    return false;
+            }
+
+            if (x - currX < 0 && px - currX < 0
+                    && px - currX > x - currX) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

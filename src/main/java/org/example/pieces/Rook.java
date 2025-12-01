@@ -5,7 +5,6 @@ import org.example.game.Piece;
 
 import java.awt.*;
 import java.util.List;
-import java.util.ArrayList;
 
 public class Rook extends Piece {
     public Rook(int coordinatesX, int coordinatesY) {

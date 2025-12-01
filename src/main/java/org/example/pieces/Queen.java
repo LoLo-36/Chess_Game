@@ -22,6 +22,9 @@ public class Queen extends Piece {
 
     @Override
     public boolean canMove(Board board, int x, int y) {
+        Rook rook = new Rook(this.getCoordinatesX(), this.getCoordinatesY(), this.getColor());
+        Bishop bishop = new Bishop(this.getCoordinatesX(), this.getCoordinatesY(), this.getColor());
 
+        return rook.canMove(board, x, y) || bishop.canMove(board, x, y);
     }
 }

@@ -55,7 +55,7 @@ public class Rook extends Piece {
             }
 
             if (px == x && py == y) {
-                return !piece.getColor().equals(this.getColor());
+                return piece.getColor() != this.getColor();
             }
         }
 

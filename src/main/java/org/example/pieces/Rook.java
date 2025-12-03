@@ -7,12 +7,22 @@ import java.awt.*;
 import java.util.List;
 
 public class Rook extends Piece {
+    private boolean firstMove;
+
     public Rook(int coordinatesX, int coordinatesY) {
         super(coordinatesX, coordinatesY);
     }
 
     public Rook(int coordinatesX, int coordinatesY, Color color) {
         super(coordinatesX, coordinatesY, color);
+    }
+
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+
+    public void setFirstMove(boolean firstMove) {
+        this.firstMove = firstMove;
     }
 
     @Override

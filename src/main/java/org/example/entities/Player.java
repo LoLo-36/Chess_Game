@@ -3,6 +3,7 @@ package org.example.entities;
 import org.example.game.*;
 import org.example.pieces.King;
 import org.example.pieces.Pawn;
+import org.example.pieces.Rook;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -85,10 +86,6 @@ public class Player {
             return null;
         }
 
-        if (piece instanceof Pawn) {
-            ((Pawn) piece).setFirstMove(false);
-        }
-
         Piece killed = board.getPieceAt(x, y);
         Move move;
 
@@ -112,6 +109,7 @@ public class Player {
 
         piece.setCoordinatesX(x);
         piece.setCoordinatesY(y);
+        piece.setFirstMove(false);
         moveHistory.add(move);
         return move;
     }

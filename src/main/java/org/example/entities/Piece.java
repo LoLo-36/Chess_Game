@@ -6,6 +6,7 @@ public abstract class Piece {
     private int coordinatesX;
     private int coordinatesY;
     private Color color;
+    protected boolean firstMove;
 
     protected Piece(int coordinatesX, int coordinatesY) {
         if (1 <= coordinatesX && coordinatesX <= 8) {
@@ -16,6 +17,7 @@ public abstract class Piece {
             this.coordinatesY = coordinatesY;
         }
         this.color = Color.WHITE;
+        this.firstMove = true;
     }
 
     protected Piece(int coordinatesX, int coordinatesY, Color color) {
@@ -27,6 +29,7 @@ public abstract class Piece {
             this.coordinatesY = coordinatesY;
         }
         this.color = color;
+        this.firstMove = true;
     }
 
     public int getCoordinatesX() {
@@ -51,6 +54,14 @@ public abstract class Piece {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+
+    public void setFirstMove(boolean firstMove) {
+        this.firstMove = firstMove;
     }
 
     public boolean checkPosition(Piece piece) {

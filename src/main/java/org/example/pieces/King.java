@@ -8,18 +8,21 @@ import java.util.List;
 
 public class King extends Piece {
     private boolean isCheck;
-    private boolean firstMove;
+    private boolean canCastlingLeft;
+    private boolean canCastlingRight;
 
     public King(int coordinatesX, int coordinatesY) {
         super(coordinatesX, coordinatesY);
         isCheck = false;
-        firstMove = true;
+        canCastlingLeft = false;
+        canCastlingRight = false;
     }
 
     public King(int coordinatesX, int coordinatesY, Color color) {
         super(coordinatesX, coordinatesY, color);
         isCheck = false;
-        firstMove = true;
+        canCastlingLeft = false;
+        canCastlingRight = false;
     }
 
     public boolean isCheck() {
@@ -30,12 +33,20 @@ public class King extends Piece {
         this.isCheck = check;
     }
 
-    public boolean isFirstMove() {
-        return firstMove;
+    public boolean canCastlingRight() {
+        return canCastlingRight;
     }
 
-    public void setFirstMove(boolean firstMove) {
-        this.firstMove = firstMove;
+    public void setCanCastlingRight(boolean canCastlingRight) {
+        this.canCastlingRight = canCastlingRight;
+    }
+
+    public boolean canCastlingLeft() {
+        return canCastlingLeft;
+    }
+
+    public void setCanCastlingLeft(boolean canCastlingLeft) {
+        this.canCastlingLeft = canCastlingLeft;
     }
 
     @Override
@@ -55,6 +66,21 @@ public class King extends Piece {
         Piece target = board.getPieceAt(x, y);
         int currX = this.getCoordinatesX();
         int currY = this.getCoordinatesY();
+
+        if (firstMove && target instanceof Rook rook
+                && target.isFirstMove() && target.getColor() == this.getColor()) {
+            if (x > currX && board.getPieceAt(currX + 1, currY) == null
+                    && rook.canMove(board, currX + 1, currY)) {
+                this.canCastlingRight = true;
+                return true;
+            }
+
+            if (x < currX && board.getPieceAt(currX - 1, currY) == null
+                    && rook.canMove(board, currX - 1, currY)) {
+                this.canCastlingLeft = true;
+                return true;
+            }
+        }
 
         if (Math.abs(currX - x) <= 1
                 && Math.abs(currY - y) <= 1) {

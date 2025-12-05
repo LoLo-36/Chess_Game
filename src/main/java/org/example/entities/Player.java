@@ -75,6 +75,7 @@ public class Player {
     public boolean isInTurn() {
         return inTurn;
     }
+
     public void setInTurn(boolean inTurn) {
         this.inTurn = inTurn;
     }
@@ -86,13 +87,27 @@ public class Player {
             return null;
         }
 
-        Piece killed = board.getPieceAt(x, y);
         Move move;
+        Piece other = board.getPieceAt(x, y);
+
+        if (piece instanceof King king && other instanceof Rook rook
+                && king.firstMove && rook.firstMove) {
+            move = castling(king, rook);
+        } else {
+            move = moveTo(board, piece, x, y);
+        }
+
+        return move;
+    }
+
+    public Move moveTo(Board board, Piece piece, int x, int y) {
+        Move move;
+        Piece killed = board.getPieceAt(x, y);
 
         if (killed == null) {
             move = new Move(piece.getCoordinatesX(), x,
-                            piece.getCoordinatesY(), y,
-                            piece
+                    piece.getCoordinatesY(), y,
+                    piece
             );
         } else {
             move = new Move(piece.getCoordinatesX(), x,
@@ -111,6 +126,32 @@ public class Player {
         piece.setCoordinatesY(y);
         piece.setFirstMove(false);
         moveHistory.add(move);
+        return move;
+    }
+
+    public Move castling(King king, Rook rook) {
+        Move move;
+
+        if (king.canCastlingLeft()) {
+            rook.setCoordinatesX(king.getCoordinatesX() - 1);
+            rook.setCoordinatesY(king.getCoordinatesY());
+            king.setCoordinatesX(king.getCoordinatesX() - 2);
+            king.setCoordinatesY(king.getCoordinatesY());
+        }
+
+        if (king.canCastlingRight()) {
+            rook.setCoordinatesX(king.getCoordinatesX() + 1);
+            rook.setCoordinatesY(king.getCoordinatesY());
+            king.setCoordinatesX(king.getCoordinatesX() + 2);
+            king.setCoordinatesY(king.getCoordinatesY());
+        }
+
+        move = new Move(king.getCoordinatesX(), rook.getCoordinatesX(),
+                king.getCoordinatesY(), rook.getCoordinatesY(),
+                king,
+                rook
+        );
+
         return move;
     }
 }

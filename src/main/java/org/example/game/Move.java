@@ -10,23 +10,51 @@ public class Move {
 
     private Piece movedPiece;
     private Piece killedPiece;
+    private Piece promotedPiece;
+    private MoveType type;
 
     public Move(int startX, int endX, int startY, int endY, Piece movedPiece) {
         this.startX = startX;
-        this.startY = startY;
         this.endX = endX;
+        this.startY = startY;
         this.endY = endY;
         this.movedPiece = movedPiece;
         this.killedPiece = null;
+        this.type = MoveType.NORMAL;
+        this.promotedPiece = null;
     }
 
     public Move(int startX, int endX, int startY, int endY, Piece movedPiece, Piece killedPiece) {
         this.startX = startX;
-        this.startY = startY;
         this.endX = endX;
+        this.startY = startY;
         this.endY = endY;
         this.movedPiece = movedPiece;
         this.killedPiece = killedPiece;
+        this.type = MoveType.NORMAL;
+        this.promotedPiece = null;
+    }
+
+    public Move(int startX, int endX, int startY, int endY, Piece movedPiece, MoveType type) {
+        this.startX = startX;
+        this.endX = endX;
+        this.startY = startY;
+        this.endY = endY;
+        this.movedPiece = movedPiece;
+        this.killedPiece = null;
+        this.type = type;
+        this.promotedPiece = null;
+    }
+
+    public Move(int startX, int endX, int startY, int endY, Piece movedPiece, Piece killedPiece, Piece promotedPiece) {
+        this.startX = startX;
+        this.endX = endX;
+        this.startY = startY;
+        this.endY = endY;
+        this.movedPiece = movedPiece;
+        this.killedPiece = killedPiece;
+        this.type = MoveType.PROMOTION;
+        this.promotedPiece = promotedPiece;
     }
 
     public int getStartX() {
@@ -77,77 +105,47 @@ public class Move {
         this.killedPiece = killedPiece;
     }
 
+    public Piece getPromotedPiece() {
+        return promotedPiece;
+    }
+
+    public void setPromotedPiece(Piece promotedPiece) {
+        this.promotedPiece = promotedPiece;
+    }
+
+    public MoveType getType() {
+        return type;
+    }
+
+    public void setType(MoveType type) {
+        this.type = type;
+    }
+
+    @Override
     public String toString() {
+        if (type == MoveType.CASTLING) {
+            return (endX > startX) ? "O-O" : "O-O-O";
+        }
+
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
-        switch (endX) {
-            case 1:
-                sb.append("a");
-                break;
-            case 2:
-                sb.append("b");
-                break;
-            case 3:
-                sb.append("c");
-                break;
-            case 4:
-                sb.append("d");
-                break;
-            case 5:
-                sb.append("e");
-                break;
-            case 6:
-                sb.append("f");
-                break;
-            case 7:
-                sb.append("g");
-                break;
-            case 8:
-                sb.append("h");
-                break;
-            default:
-                break;
-        }
 
-        switch (endY) {
-            case 1:
-                sb.append("1");
-                break;
-            case 2:
-                sb.append("2");
-                break;
-            case 3:
-                sb.append("3");
-                break;
-            case 4:
-                sb.append("4");
-                break;
-            case 5:
-                sb.append("5");
-                break;
-            case 6:
-                sb.append("6");
-                break;
-            case 7:
-                sb.append("7");
-                break;
-            case 8:
-                sb.append("8");
-                break;
-            default:
-                break;
-        }
-        sb.append(")");
+        sb.append(movedPiece.getColor()).append("-").append(movedPiece.getSymbol());
+        sb.append(convertCoordinate(endX, endY));
+
         if (killedPiece != null) {
-            sb.append(" eat: ")
-                    .append(killedPiece.getColor())
-                    .append("-")
-                    .append(killedPiece.getSymbol());
+            sb.append(" x ").append(killedPiece.getColor())
+                    .append("-").append(killedPiece.getSymbol());
         }
 
-        return movedPiece.getColor()
-                + "-" + movedPiece.getSymbol()
-                + sb
-        ;
+        if (type == MoveType.PROMOTION && promotedPiece != null) {
+            sb.append("=").append(promotedPiece.getSymbol());
+        }
+
+        return sb.toString();
+    }
+
+    private String convertCoordinate(int x, int y) {
+        char col = (char) ('a' + x - 1);
+        return "(" + col + y + ")";
     }
 }

@@ -8,19 +8,26 @@ import java.util.List;
 
 public class Pawn extends Piece {
     private boolean firstMove;
+    private boolean promote;
 
     public Pawn(int coordinatesX, int coordinatesY) {
         super(coordinatesX, coordinatesY);
         firstMove = true;
+        promote = false;
     }
 
     public Pawn(int coordinatesX, int coordinatesY, Color color) {
         super(coordinatesX, coordinatesY, color);
         firstMove = true;
+        promote = false;
     }
 
     public void setFirstMove(boolean firstMove) {
         this.firstMove = firstMove;
+    }
+
+    public void setPromote(boolean promote) {
+        this.promote = promote;
     }
 
     @Override

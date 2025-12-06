@@ -96,7 +96,7 @@ public class Player {
         } else {
             move = moveTo(board, piece, x, y);
         }
-
+        moveHistory.add(move);
         return move;
     }
 
@@ -125,12 +125,13 @@ public class Player {
         piece.setCoordinatesX(x);
         piece.setCoordinatesY(y);
         piece.setFirstMove(false);
-        moveHistory.add(move);
         return move;
     }
 
     public Move castling(King king, Rook rook) {
         Move move;
+        int oldKingX = king.getCoordinatesX();
+        int oldKingY = king.getCoordinatesY();
 
         if (king.canCastlingLeft()) {
             rook.setCoordinatesX(king.getCoordinatesX() - 1);
@@ -146,12 +147,42 @@ public class Player {
             king.setCoordinatesY(king.getCoordinatesY());
         }
 
-        move = new Move(king.getCoordinatesX(), rook.getCoordinatesX(),
-                king.getCoordinatesY(), rook.getCoordinatesY(),
-                king,
-                rook
-        );
+        move = new Move(oldKingX, king.getCoordinatesX(),
+                oldKingY, king.getCoordinatesY(),
+                king, MoveType.CASTLING);
 
         return move;
+    }
+
+    public boolean checkPromotion(Piece piece) {
+        if (piece instanceof Pawn) {
+            int y = piece.getCoordinatesY();
+            return (piece.getColor() == Color.WHITE && y == 8) ||
+                    (piece.getColor() == Color.BLACK && y == 1);
+        }
+        return false;
+    }
+
+    public Piece promotePawn(Board board, Piece pawn, String newType) {
+        if (!checkPromotion(pawn)) {
+            return pawn;
+        }
+
+        Piece newPiece;
+        int x = pawn.getCoordinatesX();
+        int y = pawn.getCoordinatesY();
+        Color color = pawn.getColor();
+
+        newPiece = switch (newType.toUpperCase()) {
+            case "ROOK" -> new Rook(x, y, color);
+            case "BISHOP" -> new Bishop(x, y, color);
+            case "KNIGHT" -> new Knight(x, y, color);
+            default -> new Queen(x, y, color);
+        };
+        board.removePieceAt(x, y);
+
+        board.addPiece(newPiece);
+
+        return newPiece;
     }
 }

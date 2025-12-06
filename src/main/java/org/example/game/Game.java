@@ -59,7 +59,7 @@ public class Game {
         }
     }
 
-    public boolean playTurn(int startX, int startY, int endX, int endY) {
+    public boolean playTurn(int startX, int startY, int endX, int endY, String promotionType) {
         if (isGameOver) {
             this.gameStatusMessage = "Game is already over.";
             return false;
@@ -81,7 +81,14 @@ public class Game {
         Move move = currentPlayer.movePiece(board, pieceToMove, endX, endY);
         if (move == null) {
             return false;
-        } else {
+        }
+
+        moveHistory.add(move);
+
+        if (currentPlayer.checkPromotion(pieceToMove)) {
+            String type = (promotionType == null || promotionType.isEmpty()) ? "QUEEN" : promotionType;
+            Piece promotedPiece = currentPlayer.promotePawn(board, pieceToMove, type);
+            move = new Move (startX, endX, startY, endY, pieceToMove, pieceToMove, promotedPiece);
             moveHistory.add(move);
         }
 

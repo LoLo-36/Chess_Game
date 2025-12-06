@@ -1,9 +1,7 @@
 package org.example.entities;
 
 import org.example.game.*;
-import org.example.pieces.King;
-import org.example.pieces.Pawn;
-import org.example.pieces.Rook;
+import org.example.pieces.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -93,6 +91,8 @@ public class Player {
         if (piece instanceof King king && other instanceof Rook rook
                 && king.firstMove && rook.firstMove) {
             move = castling(king, rook);
+            king.firstMove = false;
+            rook.firstMove = false;
         } else {
             move = moveTo(board, piece, x, y);
         }

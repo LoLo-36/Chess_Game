@@ -69,16 +69,31 @@ public class King extends Piece {
 
         if (firstMove && target instanceof Rook rook
                 && target.isFirstMove() && target.getColor() == this.getColor()) {
-            if (x > currX && board.getPieceAt(currX + 1, currY) == null
-                    && rook.canMove(board, currX + 1, currY)) {
-                this.canCastlingRight = true;
-                return true;
+            Color enemyColor = (this.getColor() == Color.WHITE) ? Color.BLACK : Color.WHITE;
+            if (board.isSquareUnderAttack(currX, currY, enemyColor)) {
+                return false;
             }
 
-            if (x < currX && board.getPieceAt(currX - 1, currY) == null
-                    && rook.canMove(board, currX - 1, currY)) {
-                this.canCastlingLeft = true;
-                return true;
+            if (x > currX) {
+                if (board.getPieceAt(currX + 1, currY) == null
+                        && rook.canMove(board, currX + 1, currY)
+                        && !board.isSquareUnderAttack(currX + 1, currY, enemyColor)
+                        && !board.isSquareUnderAttack(currX + 2, currY, enemyColor)) {
+
+                    this.canCastlingRight = true;
+                    return true;
+                }
+            }
+
+            if (x < currX) {
+                if (board.getPieceAt(currX - 1, currY) == null
+                        && rook.canMove(board, currX - 1, currY)
+                        && !board.isSquareUnderAttack(currX - 1, currY, enemyColor)
+                        && !board.isSquareUnderAttack(currX - 2, currY, enemyColor)) {
+
+                    this.canCastlingLeft = true;
+                    return true;
+                }
             }
         }
 

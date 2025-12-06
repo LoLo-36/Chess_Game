@@ -1,5 +1,8 @@
 package org.example.entities;
 
+import org.example.pieces.Pawn;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,5 +71,25 @@ public class Board {
     public boolean validate(int x, int y) {
         return 1 <= x && x <= WIDTH
                 && 1 <= y && y <= HEIGHT;
+    }
+
+    public boolean isSquareUnderAttack(int x, int y, Color opponentColor) {
+        for (Piece piece : pieces) {
+            if (piece.getColor() != opponentColor) continue;
+
+            if (piece instanceof Pawn) {
+                int direction = (piece.getColor() == Color.WHITE) ? 1 : -1;
+                if (piece.getCoordinatesY() + direction == y &&
+                        (piece.getCoordinatesX() - 1 == x || piece.getCoordinatesX() + 1 == x)) {
+                    return true;
+                }
+                continue;
+            }
+
+            if (piece.canMove(this, x, y)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

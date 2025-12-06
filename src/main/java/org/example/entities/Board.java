@@ -10,9 +10,8 @@ public class Board {
     private static final int WIDTH = 8;
     private static final int HEIGHT = 8;
     private ArrayList<Piece> pieces;
-    private static Board instance;
 
-    private Board() {
+    public Board() {
         this.pieces = new ArrayList<>();
     }
 
@@ -22,14 +21,6 @@ public class Board {
 
     public int getHEIGHT() {
         return HEIGHT;
-    }
-
-    public static Board getInstance() {
-        if (instance == null) {
-            instance = new Board();
-        }
-
-        return instance;
     }
 
     public void setPiece(List<Piece> pieces) {

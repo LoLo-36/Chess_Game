@@ -3,7 +3,9 @@ package org.example.game;
 import org.example.entities.Board;
 import org.example.entities.Piece;
 import org.example.entities.Player;
+import org.example.pieces.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class Game {
     private String gameStatusMessage;
 
     public Game() {
-        this.board = Board.getInstance();
+        this.board = new Board();
         this.player1 = new Player("Player 1");
         this.player2 = new Player("Player 2");
     }
@@ -55,7 +57,29 @@ public class Game {
 
     public void generateBoard(String type) {
         if (type.equals("Full")) {
+            for (int x = 1; x <= 8; x++) {
+                board.addPiece(new Pawn(x, 7, Color.BLACK));
+            }
+            board.addPiece(new Rook(1, 8, Color.BLACK));
+            board.addPiece(new Knight(2, 8, Color.BLACK));
+            board.addPiece(new Bishop(3, 8, Color.BLACK));
+            board.addPiece(new Queen(4, 8, Color.BLACK));
+            board.addPiece(new King(5, 8, Color.BLACK));
+            board.addPiece(new Bishop(6, 8, Color.BLACK));
+            board.addPiece(new Knight(7, 8, Color.BLACK));
+            board.addPiece(new Rook(8, 8, Color.BLACK));
 
+            for (int x = 1; x <= 8; x++) {
+                board.addPiece(new Pawn(x, 2, Color.WHITE));
+            }
+            board.addPiece(new Rook(1, 1, Color.WHITE));
+            board.addPiece(new Knight(2, 1, Color.WHITE));
+            board.addPiece(new Bishop(3, 1, Color.WHITE));
+            board.addPiece(new Queen(4, 1, Color.WHITE));
+            board.addPiece(new King(5, 1, Color.WHITE));
+            board.addPiece(new Bishop(6, 1, Color.WHITE));
+            board.addPiece(new Knight(7, 1, Color.WHITE));
+            board.addPiece(new Rook(8, 1, Color.WHITE));
         }
     }
 

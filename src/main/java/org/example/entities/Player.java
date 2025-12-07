@@ -6,20 +6,21 @@ import org.example.pieces.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Player {
     private String name;
     private Color color;
     private boolean inTurn;
     private boolean isWinner;
-    private List<Move> moveHistory;
+    private Stack<Move> moveHistory;
 
     public Player() {
         this.name = "";
         this.color = Color.WHITE;
         this.inTurn = false;
         this.isWinner = false;
-        this.moveHistory = new ArrayList<>();
+        this.moveHistory = new Stack<>();
     }
 
     public Player(String name) {
@@ -27,7 +28,7 @@ public class Player {
         this.color = Color.WHITE;
         this.inTurn = false;
         this.isWinner = false;
-        this.moveHistory = new ArrayList<>();
+        this.moveHistory = new Stack<>();
     }
 
     public Player(String name, Color color) {
@@ -35,7 +36,7 @@ public class Player {
         this.color = color;
         this.inTurn = false;
         this.isWinner = false;
-        this.moveHistory = new ArrayList<>();
+        this.moveHistory = new Stack<>();
     }
 
     public Color getColor() {
@@ -58,7 +59,7 @@ public class Player {
         return moveHistory;
     }
 
-    public void setMoves(List<Move> moves) {
+    public void setMoves(Stack<Move> moves) {
         this.moveHistory = moves;
     }
 
@@ -96,7 +97,7 @@ public class Player {
         } else {
             move = moveTo(board, piece, x, y);
         }
-        moveHistory.add(move);
+        moveHistory.push(move);
         return move;
     }
 

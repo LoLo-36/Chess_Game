@@ -1,19 +1,20 @@
 package org.example.game;
 
+import com.sun.tools.javac.util.StringUtils;
 import org.example.entities.Board;
 import org.example.entities.Piece;
 import org.example.entities.Player;
 import org.example.pieces.*;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class Game {
     private final Board board;
     private final Player player1;
     private final Player player2;
-    private List<Move> moveHistory;
+    private Stack<Move> moveHistory = new Stack<>();
     private boolean isGameOver;
     private String gameStatusMessage;
 
@@ -47,16 +48,16 @@ public class Game {
         return player2;
     }
 
-    public List<Move> getMoveHistory() {
+    public Stack<Move> getMoveHistory() {
         return moveHistory;
     }
 
-    public void setMoveHistory(List<Move> moveHistory) {
+    public void setMoveHistory(Stack<Move> moveHistory) {
         this.moveHistory = moveHistory;
     }
 
     public void generateBoard(String type) {
-        if (type.equals("Full")) {
+        if (StringUtils.toUpperCase(type).equals("FULL")) {
             for (int x = 1; x <= 8; x++) {
                 board.addPiece(new Pawn(x, 7, Color.BLACK));
             }
@@ -107,13 +108,13 @@ public class Game {
             return false;
         }
 
-        moveHistory.add(move);
+        moveHistory.push(move);
 
         if (currentPlayer.checkPromotion(pieceToMove)) {
             String type = (promotionType == null || promotionType.isEmpty()) ? "QUEEN" : promotionType;
             Piece promotedPiece = currentPlayer.promotePawn(board, pieceToMove, type);
             move = new Move (startX, endX, startY, endY, pieceToMove, pieceToMove, promotedPiece);
-            moveHistory.add(move);
+            moveHistory.push(move);
         }
 
         if (currentPlayer.isWinner()) {

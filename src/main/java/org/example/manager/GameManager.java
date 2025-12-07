@@ -9,10 +9,10 @@ import java.util.UUID;
 public class GameManager {
     private static Map<String, Game> activeGames = new HashMap<>();
 
-    public String createNewGame() {
+    public String createNewGame(String type) {
         String gameId = UUID.randomUUID().toString();
         Game game = new Game();
-        game.generateBoard("Full");
+        game.generateBoard(type);
         activeGames.put(gameId, game);
         return gameId;
     }

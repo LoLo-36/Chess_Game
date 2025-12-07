@@ -113,7 +113,7 @@ public class Game {
         if (currentPlayer.checkPromotion(pieceToMove)) {
             String type = (promotionType == null || promotionType.isEmpty()) ? "QUEEN" : promotionType;
             Piece promotedPiece = currentPlayer.promotePawn(board, pieceToMove, type);
-            move = new Move (startX, endX, startY, endY, pieceToMove, pieceToMove, promotedPiece);
+            move = new Move (startX, endX, startY, endY, pieceToMove, board.getPieceAt(endX, endY), promotedPiece);
             moveHistory.push(move);
         }
 
@@ -135,5 +135,79 @@ public class Game {
 
     public String getGameStatusMessage() {
         return gameStatusMessage;
+    }
+
+    public void backToPreviousMove() {
+        if (moveHistory.isEmpty()) {
+            return;
+        }
+
+        Move prevMove =  moveHistory.peek();
+        moveHistory.pop();
+        if (prevMove == null) {
+            return;
+        }
+
+        switch (prevMove.getType()) {
+            case MoveType.NORMAL:
+                Piece curr = board.getPieceAt(prevMove.getEndX(), prevMove.getEndY());
+                Piece killed = prevMove.getKilledPiece();
+
+                curr.setCoordinatesX(prevMove.getStartX());
+                curr.setCoordinatesY(prevMove.getStartY());
+                if (killed != null) {
+                    board.addPiece(killed);
+                }
+            break;
+
+            case MoveType.PROMOTION:
+                moveHistory.pop();
+                Piece movedPiece = prevMove.getMovedPiece();
+                Piece killedPiece = prevMove.getKilledPiece();
+
+                if (board.getPieceAt(prevMove.getEndX(), prevMove.getEndY()) != null) {
+                    board.removePieceAt(prevMove.getEndX(), prevMove.getEndY());
+                }
+                if (killedPiece != null) {
+                    board.addPiece(killedPiece);
+                }
+                movedPiece.setCoordinatesX(prevMove.getStartX());
+                movedPiece.setCoordinatesY(prevMove.getStartY());
+                board.addPiece(movedPiece);
+            break;
+
+            case MoveType.CASTLING:
+                Piece king = board.getPieceAt(prevMove.getEndX(), prevMove.getEndY());
+                Piece rook = null;
+                if (prevMove.getStartX() < king.getCoordinatesX()) {
+                    rook = board.getPieceAt(king.getCoordinatesX() - 1, king.getCoordinatesY());
+                    if (rook != null) {
+                        rook.setCoordinatesX(8);
+                        rook.setCoordinatesY(king.getCoordinatesY());
+                        rook.setFirstMove(true);
+                    }
+                }
+                if (prevMove.getStartX() > king.getCoordinatesX()) {
+                    rook = board.getPieceAt(king.getCoordinatesX() + 1, king.getCoordinatesY());
+                    if (rook != null) {
+                        rook.setCoordinatesX(1);
+                        rook.setCoordinatesY(king.getCoordinatesY());
+                        rook.setFirstMove(true);
+                    }
+                }
+
+                king.setCoordinatesX(prevMove.getStartX());
+                king.setCoordinatesY(prevMove.getStartY());
+                king.setFirstMove(true);
+            break;
+        }
+
+        player1.setInTurn(!player1.isInTurn());
+        player2.setInTurn(!player2.isInTurn());
+
+        if (isGameOver) {
+            isGameOver = false;
+            gameStatusMessage = "";
+        }
     }
 }

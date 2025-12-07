@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Stack;
 
 public class Player {
+    private String id;
     private String name;
     private Color color;
     private boolean inTurn;
@@ -16,6 +17,7 @@ public class Player {
     private Stack<Move> moveHistory;
 
     public Player() {
+        this.id = "";
         this.name = "";
         this.color = Color.WHITE;
         this.inTurn = false;
@@ -24,6 +26,7 @@ public class Player {
     }
 
     public Player(String name) {
+        this.id = "";
         this.name = name;
         this.color = Color.WHITE;
         this.inTurn = false;
@@ -32,11 +35,33 @@ public class Player {
     }
 
     public Player(String name, Color color) {
+        this.id = "";
         this.name = name;
         this.color = color;
         this.inTurn = false;
         this.isWinner = false;
         this.moveHistory = new Stack<>();
+    }
+
+    public Player(String id, String name, Color color) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+        this.inTurn = false;
+        this.isWinner = false;
+        this.moveHistory = new Stack<>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isOccupied() {
+        return id != null && !id.isEmpty();
     }
 
     public Color getColor() {

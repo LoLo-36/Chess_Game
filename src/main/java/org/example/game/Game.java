@@ -84,6 +84,33 @@ public class Game {
         }
     }
 
+    public List<Point> getValidMoves(int x, int y, String requesterId) {
+        List<Point> validMoves = new ArrayList<>();
+        Piece piece = board.getPieceAt(x, y);
+
+        if (piece == null) return validMoves;
+
+        Player owner = (piece.getColor() == Color.WHITE) ? player1 : player2;
+
+        if (!owner.getId().equals(requesterId)) {
+            return validMoves;
+        }
+
+        Player currentPlayer = player1.isInTurn() ? player1 : player2;
+        if (piece.getColor() != currentPlayer.getColor()) {
+            return validMoves;
+        }
+
+        for (int row = 1; row <= 8; row++) {
+            for (int col = 1; col <= 8; col++) {
+                if (piece.canMove(board, col, row)) {
+                    validMoves.add(new Point(col, row));
+                }
+            }
+        }
+        return validMoves;
+    }
+
     public boolean playTurn(int startX, int startY, int endX, int endY, String promotionType) {
         if (isGameOver) {
             this.gameStatusMessage = "Game is already over.";
@@ -112,8 +139,9 @@ public class Game {
 
         if (currentPlayer.checkPromotion(pieceToMove)) {
             String type = (promotionType == null || promotionType.isEmpty()) ? "QUEEN" : promotionType;
+            Piece killedPiece = move.getKilledPiece();
             Piece promotedPiece = currentPlayer.promotePawn(board, pieceToMove, type);
-            move = new Move (startX, endX, startY, endY, pieceToMove, board.getPieceAt(endX, endY), promotedPiece);
+            move = new Move (startX, endX, startY, endY, pieceToMove, killedPiece, promotedPiece);
             moveHistory.push(move);
         }
 

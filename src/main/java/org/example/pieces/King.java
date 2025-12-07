@@ -6,23 +6,23 @@ import org.example.entities.Piece;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * This class define King.
+ *      Constructor,
+ *      Symbol,
+ *      move logical.
+ */
 public class King extends Piece {
     private boolean isCheck;
-    private boolean canCastlingLeft;
-    private boolean canCastlingRight;
 
     public King(int coordinatesX, int coordinatesY) {
         super(coordinatesX, coordinatesY);
         isCheck = false;
-        canCastlingLeft = false;
-        canCastlingRight = false;
     }
 
     public King(int coordinatesX, int coordinatesY, Color color) {
         super(coordinatesX, coordinatesY, color);
         isCheck = false;
-        canCastlingLeft = false;
-        canCastlingRight = false;
     }
 
     public boolean isCheck() {
@@ -33,27 +33,19 @@ public class King extends Piece {
         this.isCheck = check;
     }
 
-    public boolean canCastlingRight() {
-        return canCastlingRight;
-    }
-
-    public void setCanCastlingRight(boolean canCastlingRight) {
-        this.canCastlingRight = canCastlingRight;
-    }
-
-    public boolean canCastlingLeft() {
-        return canCastlingLeft;
-    }
-
-    public void setCanCastlingLeft(boolean canCastlingLeft) {
-        this.canCastlingLeft = canCastlingLeft;
-    }
-
     @Override
     public String getSymbol() {
         return "K";
     }
 
+    /**
+     * Checks whether the King can legally move to the target square (x, y).
+     *
+     * @param board the chess board containing all pieces
+     * @param x the target X coordinate
+     * @param y the target Y coordinate
+     * @return true if the King can move to (x, y), false otherwise
+     */
     @Override
     public boolean canMove(Board board, int x, int y) {
         if (!firstMove && (Math.abs(this.getCoordinatesX() - x) > 1
@@ -79,8 +71,6 @@ public class King extends Piece {
                         && rook.canMove(board, currX + 1, currY)
                         && !board.isSquareUnderAttack(currX + 1, currY, enemyColor)
                         && !board.isSquareUnderAttack(currX + 2, currY, enemyColor)) {
-
-                    this.canCastlingRight = true;
                     return true;
                 }
             }
@@ -90,8 +80,6 @@ public class King extends Piece {
                         && rook.canMove(board, currX - 1, currY)
                         && !board.isSquareUnderAttack(currX - 1, currY, enemyColor)
                         && !board.isSquareUnderAttack(currX - 2, currY, enemyColor)) {
-
-                    this.canCastlingLeft = true;
                     return true;
                 }
             }

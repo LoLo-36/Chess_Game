@@ -5,6 +5,12 @@ import org.example.entities.Piece;
 
 import java.awt.*;
 
+/**
+ * This class define Knight.
+ *      Constructor,
+ *      Symbol,
+ *      move logical.
+ */
 public class Knight extends Piece {
     public Knight(int coordinatesX, int coordinatesY) {
         super(coordinatesX, coordinatesY);
@@ -19,6 +25,14 @@ public class Knight extends Piece {
         return "N";
     }
 
+    /**
+     * Checks whether the Knight can legally move to the target square (x, y).
+     *
+     * @param board the chess board containing all pieces
+     * @param x the target X coordinate
+     * @param y the target Y coordinate
+     * @return true if the Knight can move to (x, y), false otherwise
+     */
     @Override
     public boolean canMove(Board board, int x, int y) {
         if (this.getCoordinatesX() == x || this.getCoordinatesY() == y) {

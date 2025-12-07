@@ -134,18 +134,18 @@ public class Player {
         int oldKingX = king.getCoordinatesX();
         int oldKingY = king.getCoordinatesY();
 
-        if (king.canCastlingLeft()) {
-            rook.setCoordinatesX(king.getCoordinatesX() - 1);
-            rook.setCoordinatesY(king.getCoordinatesY());
-            king.setCoordinatesX(king.getCoordinatesX() - 2);
-            king.setCoordinatesY(king.getCoordinatesY());
+        if (oldKingX > rook.getCoordinatesX()) {
+            rook.setCoordinatesX(oldKingX - 1);
+            rook.setCoordinatesY(oldKingY);
+            king.setCoordinatesX(oldKingX - 2);
+            king.setCoordinatesY(oldKingY);
         }
 
-        if (king.canCastlingRight()) {
-            rook.setCoordinatesX(king.getCoordinatesX() + 1);
-            rook.setCoordinatesY(king.getCoordinatesY());
-            king.setCoordinatesX(king.getCoordinatesX() + 2);
-            king.setCoordinatesY(king.getCoordinatesY());
+        if (oldKingX < rook.getCoordinatesX()) {
+            rook.setCoordinatesX(oldKingX + 1);
+            rook.setCoordinatesY(oldKingY);
+            king.setCoordinatesX(oldKingX + 2);
+            king.setCoordinatesY(oldKingY);
         }
 
         move = new Move(oldKingX, king.getCoordinatesX(),

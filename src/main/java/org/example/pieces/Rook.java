@@ -6,6 +6,12 @@ import org.example.entities.Piece;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * This class define Rook.
+ *      Constructor,
+ *      Symbol,
+ *      move logical.
+ */
 public class Rook extends Piece {
     public Rook(int coordinatesX, int coordinatesY) {
         super(coordinatesX, coordinatesY);
@@ -20,6 +26,14 @@ public class Rook extends Piece {
         return "R";
     }
 
+    /**
+     * Checks whether the Rook can legally move to the target square (x, y).
+     *
+     * @param board the chess board containing all pieces
+     * @param x the target X coordinate
+     * @param y the target Y coordinate
+     * @return true if the Rook can move to (x, y), false otherwise
+     */
     @Override
     public boolean canMove(Board board, int x, int y) {
         if ((this.getCoordinatesX() != x

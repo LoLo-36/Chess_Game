@@ -6,6 +6,12 @@ import org.example.entities.Piece;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * This class define Pawn.
+ *      Constructor,
+ *      Symbol,
+ *      move logical.
+ */
 public class Pawn extends Piece {
     private boolean firstMove;
     private boolean promote;
@@ -35,6 +41,14 @@ public class Pawn extends Piece {
         return "P";
     }
 
+    /**
+     * Checks whether the Pawn can legally move to the target square (x, y).
+     *
+     * @param board the chess board containing all pieces
+     * @param x the target X coordinate
+     * @param y the target Y coordinate
+     * @return true if the Pawn can move to (x, y), false otherwise
+     */
     @Override
     public boolean canMove(Board board, int x, int y) {
         if (this.getCoordinatesX() == x

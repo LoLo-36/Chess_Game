@@ -56,6 +56,20 @@ public class Game {
         this.moveHistory = moveHistory;
     }
 
+    public boolean joinGame(String playerId) {
+        if (!player1.isOccupied()) {
+            player1.setId(playerId);
+            player1.setName("Player " + playerId.substring(0, 4));
+            return true;
+        } else if (!player2.isOccupied()) {
+            player2.setId(playerId);
+            player2.setName("Player " + playerId.substring(0, 4));
+            return true;
+        }
+
+        return false;
+    }
+
     public void generateBoard(String type) {
         if (StringUtils.toUpperCase(type).equals("FULL")) {
             for (int x = 1; x <= 8; x++) {

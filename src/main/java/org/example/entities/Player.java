@@ -2,6 +2,7 @@ package org.example.entities;
 
 import org.example.game.*;
 import org.example.pieces.*;
+import org.example.user.User;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,18 +26,18 @@ public class Player {
         this.moveHistory = new Stack<>();
     }
 
-    public Player(String name) {
-        this.id = "";
-        this.name = name;
+    public Player(User user) {
+        this.id = user.getId();
+        this.name = user.getUsername();
         this.color = Color.WHITE;
         this.inTurn = false;
         this.isWinner = false;
         this.moveHistory = new Stack<>();
     }
 
-    public Player(String name, Color color) {
-        this.id = "";
-        this.name = name;
+    public Player(User user, Color color) {
+        this.id = user.getId();
+        this.name = user.getUsername();
         this.color = color;
         this.inTurn = false;
         this.isWinner = false;

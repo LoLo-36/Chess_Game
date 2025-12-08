@@ -5,6 +5,7 @@ import org.example.entities.Board;
 import org.example.entities.Piece;
 import org.example.entities.Player;
 import org.example.pieces.*;
+import org.example.user.User;
 
 import java.awt.*;
 import java.util.*;
@@ -20,14 +21,8 @@ public class Game {
 
     public Game() {
         this.board = new Board();
-        this.player1 = new Player("Player 1");
-        this.player2 = new Player("Player 2");
-    }
-
-    public Game(Board board) {
-        this.board = board;
-        this.player1 = new Player("Player 1");
-        this.player2 = new Player("Player 2");
+        this.player1 = new Player();
+        this.player2 = new Player();
     }
 
     public Game(Board board, Player player1, Player player2) {
@@ -56,14 +51,16 @@ public class Game {
         this.moveHistory = moveHistory;
     }
 
-    public boolean joinGame(String playerId) {
+    public boolean joinGame(User joiningPlayer) {
         if (!player1.isOccupied()) {
-            player1.setId(playerId);
-            player1.setName("Player " + playerId.substring(0, 4));
+            player1.setId(joiningPlayer.getId());
+            player1.setName(joiningPlayer.getUsername());
+            player1.setColor(Color.WHITE);
             return true;
         } else if (!player2.isOccupied()) {
-            player2.setId(playerId);
-            player2.setName("Player " + playerId.substring(0, 4));
+            player2.setId(joiningPlayer.getId());
+            player2.setName(joiningPlayer.getUsername());
+            player2.setColor(Color.BLACK);
             return true;
         }
 

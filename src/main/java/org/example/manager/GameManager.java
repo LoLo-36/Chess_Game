@@ -1,6 +1,7 @@
 package org.example.manager;
 
 import org.example.game.Game;
+import org.example.user.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,22 +10,22 @@ import java.util.UUID;
 public class GameManager {
     private static Map<String, Game> activeGames = new HashMap<>();
 
-    public String createGame(String type, String hostPlayerId) {
+    public String createGame(String type, User hostPlayer) {
         String gameId = UUID.randomUUID().toString();
         Game game = new Game();
         game.generateBoard(type);
 
-        game.getPlayer1().setId(hostPlayerId);
+        game.joinGame(hostPlayer);
 
         activeGames.put(gameId, game);
         return gameId;
     }
 
-    public boolean joinGame(String gameId, String joiningPlayerId) {
+    public boolean joinGame(String gameId, User joiningPlayer) {
         Game game = activeGames.get(gameId);
         if (game == null) return false;
 
-        return game.joinGame(joiningPlayerId);
+        return game.joinGame(joiningPlayer);
     }
 
     public Game getGame(String gameId) {

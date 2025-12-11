@@ -9,6 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * This class initializes the Player object,
+ * And defines operations.
+ *   player move a piece in chessboard to specified square (x, y):
+ *     Normal move
+ *     Castling
+ *     Promote
+ */
 public class Player {
     private String id;
     private String name;
@@ -105,6 +113,21 @@ public class Player {
         this.inTurn = inTurn;
     }
 
+    /**
+     * Attempts to move a given piece to the target square (x, y).
+     * <p>
+     * This method validates the move, checks whether the piece belongs to the
+     * current player, and ensures the target square is reachable according to
+     * the piece's movement rules. It also handles special moves such as castling.
+     * </p>
+     *
+     * @param board the chess board containing all pieces
+     * @param piece the piece to be moved
+     * @param x the target X coordinate
+     * @param y the target Y coordinate
+     * @return a {@link Move} instance representing the executed move,
+     *         or {@code null} if the move is invalid
+     */
     public Move movePiece(Board board, Piece piece, int x, int y) {
         if (!board.validate(x, y)
                 || piece.getColor() != this.color
@@ -127,6 +150,19 @@ public class Player {
         return move;
     }
 
+    /**
+     * Moves a piece to the target square (x, y) assuming the move is already validated.
+     * <p>
+     * This method updates the board state, handles captures if the target square
+     * contains an enemy piece, and checks for win condition when a King is captured.
+     * </p>
+     *
+     * @param board the chess board
+     * @param piece the piece being moved
+     * @param x the target X coordinate
+     * @param y the target Y coordinate
+     * @return a {@link Move} representing the movement, including captured pieces if any
+     */
     public Move moveTo(Board board, Piece piece, int x, int y) {
         Move move;
         Piece killed = board.getPieceAt(x, y);
@@ -155,6 +191,18 @@ public class Player {
         return move;
     }
 
+    /**
+     * Performs castling between a King and a Rook.
+     * <p>
+     * This method assumes castling conditions have already been validated
+     * (neither piece has moved before, correct positioning, unobstructed path, etc.).
+     * The method updates both the King and Rook positions and records a CASTLING move.
+     * </p>
+     *
+     * @param king the King involved in castling
+     * @param rook the Rook involved in castling
+     * @return a {@link Move} representing the castling action
+     */
     public Move castling(King king, Rook rook) {
         Move move;
         int oldKingX = king.getCoordinatesX();
@@ -181,6 +229,13 @@ public class Player {
         return move;
     }
 
+    /**
+     * Checks whether a pawn has reached the final rank and is eligible for promotion.
+     *
+     * @param piece the piece to check
+     * @return true if the piece is a Pawn and has reached the opposite end of the board;
+     *         false otherwise
+     */
     public boolean checkPromotion(Piece piece) {
         if (piece instanceof Pawn) {
             int y = piece.getCoordinatesY();
@@ -190,6 +245,20 @@ public class Player {
         return false;
     }
 
+    /**
+     * Promotes a pawn to a new piece type.
+     * <p>
+     * If the pawn is eligible for promotion, it is removed from the board and
+     * replaced with a new piece of the specified type. Valid promotion types are:
+     * "ROOK", "BISHOP", "KNIGHT", or "QUEEN" (default).
+     * </p>
+     *
+     * @param board the chess board
+     * @param pawn the pawn to be promoted
+     * @param newType the target piece type (case-insensitive)
+     * @return the newly created promoted piece; if promotion is not allowed,
+     *         returns the original pawn
+     */
     public Piece promotePawn(Board board, Piece pawn, String newType) {
         if (!checkPromotion(pawn)) {
             return pawn;

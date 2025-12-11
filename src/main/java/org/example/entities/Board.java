@@ -10,10 +10,12 @@ import java.util.List;
  * This class initializes the chessboard object:
  *      A board is a square with size is 8x8 and has List of Piece
  * And defines operations on the chessboard.
+ * <p>
  *      get Piece on square,
  *      remove Piece on coordinates,
  *      add Piece into chess board,
  *      check the square if it is under attack.
+ * </p>
  */
 public class Board {
     private static final int WIDTH = 8;
@@ -45,7 +47,7 @@ public class Board {
      *
      * @param x coordinates X of square
      * @param y coordinates Y of square
-     * @return a piece if square have piece and null if square is empty.
+     * @return a {@link Piece} if square have piece or {@code null} if square is empty.
      */
     public Piece getPieceAt(int x, int y) {
         for (Piece piece : pieces) {
@@ -72,8 +74,8 @@ public class Board {
     }
 
     /**
-     * Add Piece into chess board.
-     *      if the square already has a piece then do nothing.
+     * Add Piece into chess board,
+     * if the square already has a piece then do nothing.
      *
      * @param piece the Piece that want to add
      */
@@ -101,7 +103,9 @@ public class Board {
 
     /**
      * Check the square if it is under attack.
-     *      check all the pieces of opponent player on the chessboard to see if any one of them can attack this square
+     * <p>
+     * Check all the pieces of opponent player on the chessboard to see if any one of them can attack this square.
+     * </p>
      *
      * @param x coordinates X of square
      * @param y coordinates Y of square

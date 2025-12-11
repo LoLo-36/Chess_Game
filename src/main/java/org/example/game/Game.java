@@ -51,6 +51,14 @@ public class Game {
         this.moveHistory = moveHistory;
     }
 
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public String getGameStatusMessage() {
+        return gameStatusMessage;
+    }
+
     public boolean joinGame(User joiningPlayer) {
         if (!player1.isOccupied()) {
             player1.setId(joiningPlayer.getId());
@@ -98,11 +106,9 @@ public class Game {
     public List<Point> getValidMoves(int x, int y, String requesterId) {
         List<Point> validMoves = new ArrayList<>();
         Piece piece = board.getPieceAt(x, y);
-
         if (piece == null) return validMoves;
 
         Player owner = (piece.getColor() == Color.WHITE) ? player1 : player2;
-
         if (!owner.getId().equals(requesterId)) {
             return validMoves;
         }
@@ -166,14 +172,6 @@ public class Game {
         otherPlayer.setInTurn(true);
 
         return true;
-    }
-
-    public boolean isGameOver() {
-        return isGameOver;
-    }
-
-    public String getGameStatusMessage() {
-        return gameStatusMessage;
     }
 
     public void backToPreviousMove() {

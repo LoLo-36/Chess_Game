@@ -5,7 +5,6 @@ import org.example.pieces.*;
 import org.example.user.User;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -69,8 +68,8 @@ public class Player {
         this.id = id;
     }
 
-    public boolean isOccupied() {
-        return id != null && !id.isEmpty();
+    public boolean isNotOccupied() {
+        return id == null || id.isEmpty();
     }
 
     public Color getColor() {
@@ -267,13 +266,13 @@ public class Player {
         Piece newPiece;
         int x = pawn.getCoordinatesX();
         int y = pawn.getCoordinatesY();
-        Color color = pawn.getColor();
+        Color pawnColor = pawn.getColor();
 
         newPiece = switch (newType.toUpperCase()) {
-            case "ROOK" -> new Rook(x, y, color);
-            case "BISHOP" -> new Bishop(x, y, color);
-            case "KNIGHT" -> new Knight(x, y, color);
-            default -> new Queen(x, y, color);
+            case "ROOK" -> new Rook(x, y, pawnColor);
+            case "BISHOP" -> new Bishop(x, y, pawnColor);
+            case "KNIGHT" -> new Knight(x, y, pawnColor);
+            default -> new Queen(x, y, pawnColor);
         };
         board.removePieceAt(x, y);
 

@@ -11,6 +11,14 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Represents a chess game session between two players.
+ * <p>
+ * The Game class manages the board state, players, move history,
+ * turn, special moves (castling, promotion), and undo moves.
+ * It acts as the core controller that coordinates all gameplay logic.
+ * </p>
+ */
 public class Game {
     private final Board board;
     private final Player player1;
@@ -31,41 +39,22 @@ public class Game {
         this.player2 = player2;
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
-    }
-
-    public Stack<Move> getMoveHistory() {
-        return moveHistory;
-    }
-
-    public void setMoveHistory(Stack<Move> moveHistory) {
-        this.moveHistory = moveHistory;
-    }
-
-    public boolean isGameOver() {
-        return isGameOver;
-    }
-
-    public String getGameStatusMessage() {
-        return gameStatusMessage;
-    }
-
+    /**
+     * Helps players participate in a game.
+     * <p>
+     * The first joining user becomes White, the second becomes Black.
+     * </p>
+     *
+     * @param joiningPlayer the user attempting to join
+     * @return true if the player successfully joined; false if both slots are occupied
+     */
     public boolean joinGame(User joiningPlayer) {
-        if (!player1.isOccupied()) {
+        if (player1.isNotOccupied()) {
             player1.setId(joiningPlayer.getId());
             player1.setName(joiningPlayer.getUsername());
             player1.setColor(Color.WHITE);
             return true;
-        } else if (!player2.isOccupied()) {
+        } else if (player2.isNotOccupied()) {
             player2.setId(joiningPlayer.getId());
             player2.setName(joiningPlayer.getUsername());
             player2.setColor(Color.BLACK);
@@ -75,6 +64,17 @@ public class Game {
         return false;
     }
 
+    /**
+     * Generates chess pieces on the board based on a given setup type.
+     * <p>
+     * Currently supports:
+     * <ul>
+     *     <li>"FULL" – standard chess starting position</li>
+     * </ul>
+     * </p>
+     *
+     * @param type setup type ("FULL")
+     */
     public void generateBoard(String type) {
         if (StringUtils.toUpperCase(type).equals("FULL")) {
             for (int x = 1; x <= 8; x++) {
@@ -103,6 +103,17 @@ public class Game {
         }
     }
 
+    /**
+     * Returns the list of valid moves for a piece located at (x, y).
+     * <p>
+     * The requester must be the owner of the piece, and it must be their turn.
+     * </p>
+     *
+     * @param x X-coordinate of the piece
+     * @param y Y-coordinate of the piece
+     * @param requesterId ID of the requesting player
+     * @return list of valid target squares as {@link Point} objects
+     */
     public List<Point> getValidMoves(int x, int y, String requesterId) {
         List<Point> validMoves = new ArrayList<>();
         Piece piece = board.getPieceAt(x, y);
@@ -128,6 +139,27 @@ public class Game {
         return validMoves;
     }
 
+    /**
+     * Attempts to play a move from (startX, startY) to (endX, endY).
+     * <p>
+     * This method handles:
+     * <ul>
+     *     <li>Move validation</li>
+     *     <li>Captures</li>
+     *     <li>Promotion</li>
+     *     <li>Castling</li>
+     *     <li>Turn switching</li>
+     *     <li>Win detection (King captured)</li>
+     * </ul>
+     * </p>
+     *
+     * @param startX        starting X-coordinate
+     * @param startY        starting Y-coordinate
+     * @param endX          target X-coordinate
+     * @param endY          target Y-coordinate
+     * @param promotionType optional promotion type (Queen if null)
+     * @return true if the move is legal and processed; false otherwise
+     */
     public boolean playTurn(int startX, int startY, int endX, int endY, String promotionType) {
         if (isGameOver) {
             this.gameStatusMessage = "Game is already over.";
@@ -174,6 +206,19 @@ public class Game {
         return true;
     }
 
+    /**
+     * Reverts the board state back to the previous move.
+     * <p>
+     * Supports undoing:
+     * <ul>
+     *     <li>Normal moves</li>
+     *     <li>Captures</li>
+     *     <li>Promotion</li>
+     *     <li>Castling</li>
+     * </ul>
+     * Also restores turn order and game status if necessary.
+     * </p>
+     */
     public void backToPreviousMove() {
         if (moveHistory.isEmpty()) {
             return;
@@ -246,5 +291,33 @@ public class Game {
             isGameOver = false;
             gameStatusMessage = "";
         }
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public Stack<Move> getMoveHistory() {
+        return moveHistory;
+    }
+
+    public void setMoveHistory(Stack<Move> moveHistory) {
+        this.moveHistory = moveHistory;
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public String getGameStatusMessage() {
+        return gameStatusMessage;
     }
 }

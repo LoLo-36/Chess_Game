@@ -2,6 +2,24 @@ package org.example.game;
 
 import org.example.entities.Piece;
 
+import java.awt.*;
+
+/**
+ * Represents a single move in a chess game.
+ * <p>
+ * A Move object stores full information about an action performed on the board,
+ * including:
+ * <ul>
+ *     <li>start and end coordinates</li>
+ *     <li>the piece that moved</li>
+ *     <li>a killed piece (if any)</li>
+ *     <li>a promoted piece (if any)</li>
+ *     <li>the type of move (normal, castling, promotion)</li>
+ * </ul>
+ * This class is used primarily for move history, undo operations,
+ * and displaying move notation.
+ * </p>
+ */
 public class Move {
     private int startX;
     private int startY;
@@ -24,6 +42,16 @@ public class Move {
         this.promotedPiece = null;
     }
 
+    /**
+     * Creates a normal move with a captured piece.
+     *
+     * @param startX      starting X coordinate
+     * @param endX        ending X coordinate
+     * @param startY      starting Y coordinate
+     * @param endY        ending Y coordinate
+     * @param movedPiece  the piece that moved
+     * @param killedPiece the piece that was captured (may be null)
+     */
     public Move(int startX, int endX, int startY, int endY, Piece movedPiece, Piece killedPiece) {
         this.startX = startX;
         this.endX = endX;
@@ -35,6 +63,16 @@ public class Move {
         this.promotedPiece = null;
     }
 
+    /**
+     * Creates a special move such as castling.
+     *
+     * @param startX     starting X coordinate
+     * @param endX       ending X coordinate
+     * @param startY     starting Y coordinate
+     * @param endY       ending Y coordinate
+     * @param movedPiece the piece that moved
+     * @param type       the type of this move (CASTLING, etc.)
+     */
     public Move(int startX, int endX, int startY, int endY, Piece movedPiece, MoveType type) {
         this.startX = startX;
         this.endX = endX;
@@ -46,6 +84,20 @@ public class Move {
         this.promotedPiece = null;
     }
 
+    /**
+     * Creates a promotion move.
+     * <p>
+     * This occurs when a pawn reaches the final rank and is replaced by another piece.
+     * </p>
+     *
+     * @param startX        starting X coordinate
+     * @param endX          ending X coordinate
+     * @param startY        starting Y coordinate
+     * @param endY          ending Y coordinate
+     * @param movedPiece    the pawn that moved
+     * @param killedPiece   the piece captured on the target square (if any)
+     * @param promotedPiece the new piece created after promotion
+     */
     public Move(int startX, int endX, int startY, int endY, Piece movedPiece, Piece killedPiece, Piece promotedPiece) {
         this.startX = startX;
         this.endX = endX;
@@ -121,6 +173,19 @@ public class Move {
         this.type = type;
     }
 
+    /**
+     * Converts the move into a human-readable notation.
+     * <p>
+     * Supports:
+     * <ul>
+     *     <li>"O-O" and "O-O-O" for castling</li>
+     *     <li>Standard notation with piece symbols</li>
+     *     <li>"x" for captures</li>
+     *     <li>"=Q/B/R/N" for promotion</li>
+     * </ul>
+     *
+     * @return a string describing the move in chess notation
+     */
     @Override
     public String toString() {
         if (type == MoveType.CASTLING) {
@@ -138,7 +203,8 @@ public class Move {
         }
 
         if (type == MoveType.PROMOTION && promotedPiece != null) {
-            sb.append("=").append(promotedPiece.getSymbol());
+            sb.append(" = ").append(promotedPiece.getColor())
+                    .append("-").append(promotedPiece.getSymbol());
         }
 
         return sb.toString();

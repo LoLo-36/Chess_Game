@@ -76,7 +76,7 @@ public class Game {
      * @param type setup type ("FULL")
      */
     public void generateBoard(String type) {
-        if (StringUtils.toUpperCase(type).equals("FULL")) {
+        if (type.equals("FULL")) {
             for (int x = 1; x <= 8; x++) {
                 board.addPiece(new Pawn(x, 7, Color.BLACK));
             }

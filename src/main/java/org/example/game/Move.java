@@ -50,7 +50,7 @@ public class Move {
      * @param startY      starting Y coordinate
      * @param endY        ending Y coordinate
      * @param movedPiece  the piece that moved
-     * @param killedPiece the piece that was captured (may be null)
+     * @param killedPiece the piece that was captured
      */
     public Move(int startX, int endX, int startY, int endY, Piece movedPiece, Piece killedPiece) {
         this.startX = startX;
@@ -194,16 +194,19 @@ public class Move {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(movedPiece.getColor()).append("-").append(movedPiece.getSymbol());
-        sb.append(convertCoordinate(endX, endY));
+        sb.append(movedPiece.getColor() == Color.WHITE ? ColorInGame.WHITE : ColorInGame.BLACK)
+                .append("-").append(movedPiece.getSymbol())
+                .append(convertCoordinate(endX, endY));
 
         if (killedPiece != null) {
-            sb.append(" x ").append(killedPiece.getColor())
+            sb.append(" x ")
+                    .append(killedPiece.getColor() == Color.WHITE ? ColorInGame.WHITE : ColorInGame.BLACK)
                     .append("-").append(killedPiece.getSymbol());
         }
 
         if (type == MoveType.PROMOTION && promotedPiece != null) {
-            sb.append(" = ").append(promotedPiece.getColor())
+            sb.append(" = ")
+                    .append(promotedPiece.getColor() == Color.WHITE ? ColorInGame.WHITE : ColorInGame.BLACK)
                     .append("-").append(promotedPiece.getSymbol());
         }
 
